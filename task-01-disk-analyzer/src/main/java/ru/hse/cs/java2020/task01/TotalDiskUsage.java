@@ -1,48 +1,20 @@
 package ru.hse.cs.java2020.task01;
 
 import java.io.IOException;
-import java.nio.file.*;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class TotalDiskUsage {
-    static class PathWithAttrs {
-        Path path;
-        BasicFileAttributes attrs;
-
-        PathWithAttrs(Path path, BasicFileAttributes attrs) {
-            this.path = path;
-            this.attrs = attrs;
-        }
-
-        String prettySize() {
-            return TotalDiskUsage.formatBytes(this.attrs.size());
-        }
-
-        long getSize() {
-            return this.attrs.size();
-        }
-    }
-
-    static class DirStats {
-        long totalSize;
-        int count;
-        PathWithAttrs root;
-
-        DirStats(long totalSize, int count) {
-            this.totalSize = totalSize;
-            this.count = count;
-        }
-
-        DirStats(PathWithAttrs pa) {
-            this.totalSize = pa.getSize();
-            this.count = 1;
-        }
-
-        static DirStats combine(DirStats a, DirStats b) {
-            return new DirStats(a.totalSize + b.totalSize, a.count + b.count);
-        }
+final class TotalDiskUsage {
+    private TotalDiskUsage() {
     }
 
     public static void printDiskUsage(String dir) throws IOException {
@@ -66,10 +38,10 @@ public class TotalDiskUsage {
 
         paths
             .stream()
-            .filter(it -> !it.path.equals(root))
-            .map(it -> new PathWithAttrs(root.relativize(it.path), it.attrs))
-            .filter(it -> it.path.getNameCount() >= 1)
-            .collect(Collectors.groupingBy(it -> it.path.getName(0)))
+            .filter(it -> !it.getPath().equals(root))
+            .map(it -> new PathWithAttrs(root.relativize(it.getPath()), it.getAttrs()))
+            .filter(it -> it.getPath().getNameCount() >= 1)
+            .collect(Collectors.groupingBy(it -> it.getPath().getName(0)))
             .forEach((path, children) -> {
                 Optional<DirStats> optStats = children
                         .stream()
@@ -83,39 +55,39 @@ public class TotalDiskUsage {
                 Optional<PathWithAttrs> optRoot =
                     children
                         .stream()
-                        .filter(it -> it.path.equals(path))
+                        .filter(it -> it.getPath().equals(path))
                         .findAny();
 
                 if (optRoot.isEmpty()) {
                     return;
                 }
 
-                DirStats stats = optStats.get();
-                stats.root = optRoot.get();
+                DirStats stats = optStats.get().withRoot(optRoot.get());
                 dirStats.add(stats);
             });
 
-        dirStats.sort(Comparator.comparingLong(it -> -it.totalSize));
+        dirStats.sort(Comparator.comparingLong(it -> -it.getTotalSize()));
 
         for (int i = 0; i < dirStats.size(); i++) {
             int index = i + 1;
             DirStats stats = dirStats.get(i);
-            PathWithAttrs dir = stats.root;
-            String path = dir.path.toString();
-            String prettySize = formatBytes(stats.totalSize);
-            String percent = formatPercent(stats.totalSize, totalSize);
-            int items = stats.count - 1;
+            PathWithAttrs dir = stats.getRoot();
+            String path = dir.getPath().toString();
+            String prettySize = formatBytes(stats.getTotalSize());
+            String percent = formatPercent(stats.getTotalSize(), totalSize);
+            int items = stats.getCount() - 1;
 
-            if (dir.attrs.isDirectory()) {
+            if (dir.getAttrs().isDirectory()) {
                 path += "/";
             } else {
                 items = -1;
             }
 
-            System.out.printf("%2d. %20s| %10s| %7s|", index, path, prettySize, percent);
+            System.out.printf("%2d. %35s| %10s| %7s|", index, path, prettySize, percent);
             if (items != -1) {
                 System.out.printf("%6d items", items);
             }
+
             System.out.println();
         }
     }
@@ -123,11 +95,12 @@ public class TotalDiskUsage {
     private static void printBiggestFiles(Path root, List<PathWithAttrs> paths) {
         System.out.println("----------- BIGGEST FILES -----------");
 
+        final int topFilesCount = 10;
         List<PathWithAttrs> biggestFiles = paths
                 .stream()
-                .filter(it -> it.attrs.isRegularFile())
-                .sorted(Comparator.comparingLong(it -> -it.attrs.size()))
-                .limit(10)
+                .filter(it -> it.getAttrs().isRegularFile())
+                .sorted(Comparator.comparingLong(it -> -it.getAttrs().size()))
+                .limit(topFilesCount)
                 .collect(Collectors.toList());
 
         for (int i = 0; i < biggestFiles.size(); i++) {
@@ -135,7 +108,7 @@ public class TotalDiskUsage {
             PathWithAttrs path = biggestFiles.get(i);
             String size = path.prettySize();
 
-            System.out.printf("%2d. %10s| %s\n", index, size, root.relativize(path.path));
+            System.out.printf("%2d. %10s| %s\n", index, size, root.relativize(path.getPath()));
         }
     }
 
@@ -165,12 +138,14 @@ public class TotalDiskUsage {
         return list;
     }
 
-    private static String formatBytes(long bytes) {
-        return String.format("%d Kb", bytes / 1024);
+    static String formatBytes(long bytes) {
+        final int bytesInKb = 1024;
+        return String.format("%d Kb", bytes / bytesInKb);
     }
 
     private static String formatPercent(long size, long total) {
-        double p = (double) size / total * 100;
+        final int totalPercent = 100;
+        double p = (double) size / total * totalPercent;
         return String.format("%.02f%%", p);
     }
 }
