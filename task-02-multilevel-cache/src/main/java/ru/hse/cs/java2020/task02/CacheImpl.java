@@ -8,6 +8,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class CacheImpl implements Cache<Long, String>, AutoCloseable {
+    private static final long ENTRY_WEIGHT = 4;
+
     private final DiskCache nextLevel;
     private final EvictionResolver<Long> policy;
     private final Map<Long, String> cache;
@@ -35,7 +37,7 @@ public class CacheImpl implements Cache<Long, String>, AutoCloseable {
         }
 
         Optional<String> next = this.nextLevel.get(key);
-        if (next.isPresent() && next.get().length() < maxMemorySize) {
+        if (next.isPresent() && this.weightOf(next.get().length()) < maxMemorySize) {
             this.saveInMemory(key, next.get());
             return next;
         }
@@ -51,7 +53,7 @@ public class CacheImpl implements Cache<Long, String>, AutoCloseable {
         Optional<String> old = get(key);
 
         // if value does not fit in memory
-        if (value.length() >= maxMemorySize) {
+        if (this.weightOf(value.length()) >= maxMemorySize) {
             this.remove(key);
             this.nextLevel.put(key, value);
             return old;
@@ -74,7 +76,7 @@ public class CacheImpl implements Cache<Long, String>, AutoCloseable {
 
         // free up space
         long size = value.length();
-        while (this.currentSize + size > maxMemorySize) {
+        while (this.currentSize + this.weightOf(size) > maxMemorySize) {
             Long evictKey = this.policy.findEvict();
             if (evictKey == null) {
                 throw new RuntimeException("unexpected null evictKey");
@@ -92,7 +94,7 @@ public class CacheImpl implements Cache<Long, String>, AutoCloseable {
         // put in memory cache
         this.policy.notifyPut(key, size);
         this.cache.put(key, value);
-        this.currentSize += size;
+        this.currentSize += this.weightOf(size);
     }
 
     private void remove(Long key) {
@@ -103,7 +105,11 @@ public class CacheImpl implements Cache<Long, String>, AutoCloseable {
 
         this.policy.notifyRemove(key);
         this.cache.remove(key);
-        this.currentSize -= value.length();
+        this.currentSize -= this.weightOf(value.length());
+    }
+
+    private long weightOf(long size) {
+        return size + ENTRY_WEIGHT;
     }
 
     @Override
