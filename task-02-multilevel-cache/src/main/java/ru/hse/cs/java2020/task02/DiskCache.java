@@ -56,6 +56,9 @@ public class DiskCache implements Cache<Long, String>, AutoCloseable {
         }
 
         long getRealSize() {
+            if (this.size == Long.MIN_VALUE) {
+                return 0; // hack
+            }
             return Math.abs(this.size);
         }
 
@@ -163,9 +166,14 @@ public class DiskCache implements Cache<Long, String>, AutoCloseable {
             return;
         }
 
+        long removedSize = -entry.size;
+        if (removedSize == 0) {
+            removedSize = Long.MIN_VALUE; // hack, because 0 is not negative (so sad)
+        }
+
         ByteBuffer bb = ByteBuffer.allocate(HEAD_SIZE);
         bb.putLong(key);
-        bb.putLong(-entry.size);
+        bb.putLong(removedSize);
         bb.rewind();
 
         this.channel.position(entry.offset);

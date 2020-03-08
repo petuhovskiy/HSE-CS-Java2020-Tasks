@@ -15,8 +15,8 @@ public class CacheImplTest {
         EvictionPolicy<Long> policy = new LRUPolicy.Builder<>();
 
         try (CacheImpl cache = new CacheImpl(memorySize, diskSize, tempDir.toString(), policy)) {
-            final int keys = 10000;
-            final int size = 1024 * 128;
+            final int keys = 2000;
+            final int size = 1024 * 16;
             final int iterations = 100000;
             CacheTest.fuzzTestCache(cache, keys, size, iterations);
         }
