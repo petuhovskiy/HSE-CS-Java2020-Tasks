@@ -7,7 +7,14 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Queue;
 
-public class LRUPolicy<T> implements EvictionPolicy<T> {
+public class LRUPolicy<T> implements EvictionResolver<T> {
+    static class Builder<T> implements EvictionPolicy<T> {
+        @Override
+        public EvictionResolver<T> buildResolver() {
+            return new LRUPolicy<>();
+        }
+    }
+
     static class Entry<T> {
         private final T key;
         private final Instant moment;

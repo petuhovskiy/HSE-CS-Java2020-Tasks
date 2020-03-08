@@ -1,21 +1,26 @@
 package ru.hse.cs.java2020.task02;
 
-import org.junit.Test;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
-import static org.junit.Assert.*;
 
-public class CacheTest {
+import static org.junit.Assert.assertEquals;
+
+public final class CacheTest {
     private static Random random = new Random();
 
-    public static void fuzzTestCache(Cache<Long, String> cache) {
-        final int maxKey = 100;
-        final int maxLength = 1000;
-        final int iterations = 100000;
+    private CacheTest() {
+    }
 
+    public static void fuzzTestCache(Cache<Long, String> cache) {
+        final int keys = 100;
+        final int size = 1000;
+        final int iterations = 100000;
+        fuzzTestCache(cache, keys, size, iterations);
+    }
+
+    public static void fuzzTestCache(Cache<Long, String> cache, int maxKey, int maxLength, int iterations) {
         Map<Long, String> map = new HashMap<>();
         for (int it = 0; it < iterations; it++) {
             final long key = random.nextInt(maxKey);

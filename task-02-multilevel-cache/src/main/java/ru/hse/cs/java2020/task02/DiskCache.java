@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 /* DiskCache stores data on disk as entries, which go one by one.
@@ -78,7 +79,7 @@ public class DiskCache implements Cache<Long, String>, AutoCloseable {
 
     private final SeekableByteChannel channel;
     private final long maxFileSize;
-    private final EvictionPolicy<Long> policy;
+    private final EvictionResolver<Long> policy;
 
     public DiskCache(Path file, long maxSize, EvictionPolicy<Long> policy) throws IOException {
         this.channel = Files.newByteChannel(
@@ -88,7 +89,7 @@ public class DiskCache implements Cache<Long, String>, AutoCloseable {
                 StandardOpenOption.WRITE
         );
         this.maxFileSize = maxSize;
-        this.policy = policy;
+        this.policy = policy.buildResolver();
 
         this.readAllData();
     }
@@ -156,7 +157,7 @@ public class DiskCache implements Cache<Long, String>, AutoCloseable {
         return entry;
     }
 
-    private void remove(Long key) throws IOException {
+    public void remove(Long key) throws IOException {
         Entry entry = this.entries.get(key);
         if (entry == null) {
             return;
@@ -288,6 +289,8 @@ public class DiskCache implements Cache<Long, String>, AutoCloseable {
 
     @Override
     public Optional<String> get(Long key) {
+        Objects.requireNonNull(key);
+
         Entry entry = this.entries.get(key);
         if (entry == null) {
             return Optional.empty();
@@ -310,6 +313,9 @@ public class DiskCache implements Cache<Long, String>, AutoCloseable {
 
     @Override
     public Optional<String> put(Long key, String value) {
+        Objects.requireNonNull(key);
+        Objects.requireNonNull(value);
+
         try {
             Optional<String> old = get(key);
             if (this.entries.containsKey(key)) {

@@ -16,7 +16,7 @@ public class DiskCacheTest {
         Path tempFile = tempDir.resolve("cache.dat");
 
         final long maxSize = 4096;
-        EvictionPolicy<Long> policy = new EvictionPolicyDummy();
+        EvictionPolicy<Long> policy = new EvictionPolicyDummy.Builder<>();
 
         for (int i = 0; i < values.length; i++) {
             try (DiskCache cache = new DiskCache(tempFile, maxSize, policy)) {
@@ -38,7 +38,7 @@ public class DiskCacheTest {
 
         final int iterations = 10000;
         final long maxSize = 4096;
-        EvictionPolicy<Long> policy = new LRUPolicy<>();
+        EvictionPolicy<Long> policy = new LRUPolicy.Builder<>();
 
         try (DiskCache cache = new DiskCache(tempFile, maxSize, policy)) {
             for (int it = 0; it < iterations; it++) {
@@ -56,7 +56,7 @@ public class DiskCacheTest {
         Path tempFile = tempDir.resolve("cache.dat");
 
         final long maxSize = 1024 * 1024 * 2;
-        EvictionPolicy<Long> policy = new LRUPolicy<>();
+        EvictionPolicy<Long> policy = new LRUPolicy.Builder<>();
 
         try (DiskCache cache = new DiskCache(tempFile, maxSize, policy)) {
             CacheTest.fuzzTestCache(cache);

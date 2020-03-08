@@ -1,20 +1,27 @@
 package ru.hse.cs.java2020.task02;
 
-public class EvictionPolicyDummy implements EvictionPolicy<Long> {
-    @Override
-    public void notifyPut(Long id, long size) {
+public class EvictionPolicyDummy<T> implements EvictionResolver<T> {
+    static class Builder<T> implements EvictionPolicy<T> {
+        @Override
+        public EvictionResolver<T> buildResolver() {
+            return new EvictionPolicyDummy<T>();
+        }
     }
 
     @Override
-    public void notifyGet(Long id) {
+    public void notifyPut(T id, long size) {
     }
 
     @Override
-    public void notifyRemove(Long id) {
+    public void notifyGet(T id) {
     }
 
     @Override
-    public Long findEvict() {
+    public void notifyRemove(T id) {
+    }
+
+    @Override
+    public T findEvict() {
         throw new UnsupportedOperationException();
     }
 }
