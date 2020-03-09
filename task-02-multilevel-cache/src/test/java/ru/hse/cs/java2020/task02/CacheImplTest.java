@@ -63,4 +63,20 @@ public class CacheImplTest {
             CacheTest.fuzzTestCache(cache);
         }
     }
+
+    @Test
+    public void fuzzTestBigLFU() throws Exception {
+        Path tempDir = Files.createTempDirectory("fuzzTest");
+
+        final long memorySize = 1024 * 128;
+        final long diskSize = 1024 * 1024 * 2;
+        EvictionPolicy<Long> policy = new LFUPolicy.Builder<>();
+
+        try (CacheImpl cache = new CacheImpl(memorySize, diskSize, tempDir.toString(), policy)) {
+            final int keys = 2000;
+            final int size = 1024 * 16;
+            final int iterations = 100000;
+            CacheTest.fuzzTestCache(cache, keys, size, iterations);
+        }
+    }
 }
