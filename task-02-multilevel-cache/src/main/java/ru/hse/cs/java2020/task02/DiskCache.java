@@ -314,7 +314,6 @@ public class DiskCache implements Cache<Long, String>, AutoCloseable {
             }
             return Optional.of(dataEntry.data);
         } catch (IOException e) {
-            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }
@@ -335,7 +334,6 @@ public class DiskCache implements Cache<Long, String>, AutoCloseable {
 
             return old;
         } catch (Exception e) {
-            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }
