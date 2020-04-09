@@ -2,7 +2,6 @@ package ru.hse.cs.java2020.task02;
 
 import java.util.HashMap;
 import java.util.LinkedHashSet;
-import java.util.TreeMap;
 
 public class LFUPolicy<T> implements EvictionResolver<T> {
     static class Builder<T> implements EvictionPolicy<T> {
@@ -13,14 +12,21 @@ public class LFUPolicy<T> implements EvictionResolver<T> {
     }
 
     private final HashMap<T, Integer> count;
-    private final TreeMap<Integer, LinkedHashSet<T>> freqs;
+    private final HashMap<Integer, LinkedHashSet<T>> freqs;
+
+    private int minFreq;
 
     public LFUPolicy() {
         this.count = new HashMap<>();
-        this.freqs = new TreeMap<>();
+        this.freqs = new HashMap<>();
+        this.minFreq = 0;
     }
 
     private void putFreq(T id, int freq) {
+        if (freq < this.minFreq) {
+            this.minFreq = freq;
+        }
+
         freqs
             .computeIfAbsent(freq, k -> new LinkedHashSet<>())
             .add(id);
@@ -65,10 +71,13 @@ public class LFUPolicy<T> implements EvictionResolver<T> {
 
     @Override
     public T findEvict() {
-        return this.freqs
-                .firstEntry()
-                .getValue()
-                .iterator()
-                .next();
+        while (true) {
+            LinkedHashSet<T> set = this.freqs.get(this.minFreq);
+            if (!set.isEmpty()) {
+                return set.iterator().next();
+            }
+
+            this.minFreq++;
+        }
     }
 }
