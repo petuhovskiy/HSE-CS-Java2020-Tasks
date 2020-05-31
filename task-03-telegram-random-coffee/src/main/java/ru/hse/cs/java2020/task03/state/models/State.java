@@ -4,6 +4,7 @@ import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
+import ru.hse.cs.java2020.task03.tracker.models.CreateIssue;
 import ru.hse.cs.java2020.task03.tracker.models.Myself;
 
 @Document(collection = "state")
@@ -19,6 +20,8 @@ public class State {
     private String accessToken;
     private String orgId;
     private Myself myself;
+
+    private CreateIssue createIssue;
 
     public State() {
     }
@@ -73,5 +76,13 @@ public class State {
 
     public void setMyself(Myself myself) {
         this.myself = myself;
+    }
+
+    public CreateIssue getCreateIssue() {
+        return createIssue;
+    }
+
+    public void setCreateIssue(CreateIssue createIssue) {
+        this.createIssue = createIssue;
     }
 }

@@ -74,7 +74,7 @@ public class AuthController {
         try {
             var myself = client.myself().execute();
             if (!myself.isSuccessful()) {
-                throw new RuntimeException("Unsuccessfull request. Response=" + myself.errorBody().string());
+                throw new RuntimeException("Unsuccessful request. Response=" + myself.errorBody().string());
             }
             req.getState().setMyself(myself.body());
 

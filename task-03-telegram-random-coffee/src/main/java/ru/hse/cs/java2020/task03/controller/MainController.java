@@ -15,6 +15,7 @@ import static ru.hse.cs.java2020.task03.bot.utils.Format.lines;
 public class MainController {
     private static final String KEY_LOGOUT = "\uD83D\uDEAA Выйти";
     private static final String KEY_SPECIAL = "\uD83C\uDFB1";
+    private static final String KEY_CREATE_TASK = "➕ Создать задачу";
 
     private final AuthController authController;
 
@@ -45,6 +46,7 @@ public class MainController {
 
     public static Keyboard menuKeyboard() {
         return new ReplyKeyboardMarkup(
+                new String[]{KEY_CREATE_TASK},
                 new String[]{KEY_LOGOUT}
         );
     }
@@ -58,6 +60,9 @@ public class MainController {
                 return;
             case KEY_SPECIAL:
                 resp.sendText(lines("Nothing here...", "Just a horse"));
+                return;
+            case KEY_CREATE_TASK:
+                CreateTaskController.start(req, resp);
                 return;
             default:
                 resp.sendText("Похоже ты ошибся. Я не знаю такой команды.");

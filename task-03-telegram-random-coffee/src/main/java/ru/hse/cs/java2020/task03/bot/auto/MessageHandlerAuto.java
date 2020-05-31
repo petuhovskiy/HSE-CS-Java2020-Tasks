@@ -15,8 +15,6 @@ public class MessageHandlerAuto implements MessageHandler {
 
     @Override
     public void handleMessage(Request req, Response resp) {
-        System.out.println(req.getMessage());
-
         for (RouteItem item : telegramBeanAuto.getItems()) {
             if (item.getKey().isEmpty()) {
                 continue;
