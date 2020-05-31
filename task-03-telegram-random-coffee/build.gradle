@@ -1,6 +1,18 @@
+plugins {
+    id 'org.springframework.boot' version '2.3.0.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'java'
+}
+
 version '1.0'
 
-mainClassName = 'ru.hse.cs.java2020.task03.Main'
+mainClassName = 'ru.hse.cs.java2020.task03.TrackerBotApplication'
 
 dependencies {
+    implementation 'com.github.pengrad:java-telegram-bot-api:4.8.0'
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
 }
