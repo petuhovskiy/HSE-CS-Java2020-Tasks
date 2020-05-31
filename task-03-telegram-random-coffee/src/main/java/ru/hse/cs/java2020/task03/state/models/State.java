@@ -4,6 +4,7 @@ import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
+import ru.hse.cs.java2020.task03.tracker.models.Myself;
 
 @Document(collection = "state")
 public class State {
@@ -16,6 +17,8 @@ public class State {
     private String key;
 
     private String accessToken;
+    private String orgId;
+    private Myself myself;
 
     public State() {
     }
@@ -54,5 +57,21 @@ public class State {
 
     public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
+    }
+
+    public String getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(String orgId) {
+        this.orgId = orgId;
+    }
+
+    public Myself getMyself() {
+        return myself;
+    }
+
+    public void setMyself(Myself myself) {
+        this.myself = myself;
     }
 }

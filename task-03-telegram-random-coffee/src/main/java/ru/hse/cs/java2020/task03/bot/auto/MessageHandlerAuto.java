@@ -27,6 +27,7 @@ public class MessageHandlerAuto implements MessageHandler {
             }
 
             item.handleMessage(req, resp);
+            break;
         }
     }
 }

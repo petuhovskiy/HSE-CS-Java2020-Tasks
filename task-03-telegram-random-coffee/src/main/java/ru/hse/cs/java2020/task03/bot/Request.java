@@ -2,6 +2,8 @@ package ru.hse.cs.java2020.task03.bot;
 
 import com.pengrad.telegrambot.model.Message;
 import ru.hse.cs.java2020.task03.state.models.State;
+import ru.hse.cs.java2020.task03.tracker.Client;
+import ru.hse.cs.java2020.task03.tracker.ClientFactory;
 
 public class Request {
     private final Message message;
@@ -29,5 +31,9 @@ public class Request {
             return null;
         }
         return message.text();
+    }
+
+    public Client getClient() {
+        return new ClientFactory().buildClient(getState().getAccessToken(), getState().getOrgId());
     }
 }

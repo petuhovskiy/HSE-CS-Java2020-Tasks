@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Configuration;
 public class InitTelegramClient {
     @Bean
     TelegramBot createBot(@Value("${telegram.bot.token}") String token) {
-        return new TelegramBot(token);
+        return new TelegramBot.Builder(token)
+                .debug()
+                .build();
     }
 }
