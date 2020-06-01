@@ -44,14 +44,14 @@ public class UpdateProcessorImpl implements UpdateProcessor {
 
     public void handleMessage(long chatId, State state, Message message) {
         final Request request = new Request(message, state);
-        final Response response = new Response(bot, chatId);
+        final Response response = new ResponseImpl(bot, chatId);
 
         messageHandler.handleMessage(request, response);
     }
 
     private void handleCallback(long chatId, State state, CallbackQuery callback) {
         final Request request = new Request(callback, state);
-        final Response response = new Response(bot, chatId);
+        final Response response = new ResponseImpl(bot, chatId);
 
         inlineHandler.handleInline(request, response);
     }
