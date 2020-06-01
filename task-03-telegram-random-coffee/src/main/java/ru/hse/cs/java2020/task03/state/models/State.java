@@ -5,7 +5,10 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 import ru.hse.cs.java2020.task03.tracker.models.CreateIssue;
+import ru.hse.cs.java2020.task03.tracker.models.Issue;
 import ru.hse.cs.java2020.task03.tracker.models.Myself;
+
+import java.util.List;
 
 @Document(collection = "state")
 public class State {
@@ -22,6 +25,9 @@ public class State {
     private Myself myself;
 
     private CreateIssue createIssue;
+
+    private int searchPage;
+    private List<Issue> allIssues;
 
     public State() {
     }
@@ -84,5 +90,21 @@ public class State {
 
     public void setCreateIssue(CreateIssue createIssue) {
         this.createIssue = createIssue;
+    }
+
+    public int getSearchPage() {
+        return searchPage;
+    }
+
+    public void setSearchPage(int searchPage) {
+        this.searchPage = searchPage;
+    }
+
+    public List<Issue> getAllIssues() {
+        return allIssues;
+    }
+
+    public void setAllIssues(List<Issue> allIssues) {
+        this.allIssues = allIssues;
     }
 }

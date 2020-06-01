@@ -4,9 +4,11 @@ import org.junit.Ignore;
 import org.junit.Test;
 import ru.hse.cs.java2020.task03.tracker.models.CreateIssue;
 import ru.hse.cs.java2020.task03.tracker.models.QueueLink;
+import ru.hse.cs.java2020.task03.tracker.models.SearchIssue;
 import ru.hse.cs.java2020.task03.tracker.models.User;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -61,6 +63,7 @@ public class ClientTest {
         req.setQueue(new QueueLink(queue.getId().toString()));
         req.setSummary("New test task");
         req.setDescription("Sample test description. A bit longer.");
+
         var resp = client.createIssue(req).execute();
         assertTrue(resp.isSuccessful());
         assertEquals(201, resp.code());
@@ -80,9 +83,33 @@ public class ClientTest {
         req.setSummary("New my task");
         req.setDescription("Sample test description. Want to do this task.");
         req.setAssignee(new User(myself.getUid().toString()));
+
         var resp = client.createIssue(req).execute();
         assertTrue(resp.isSuccessful());
         assertEquals(201, resp.code());
+        LOG.log(Level.INFO, resp.body().toString());
+    }
+
+    @Test
+    public void issue() throws IOException {
+        var client = factory.buildClient(token, orgId);
+
+        var resp = client.issue("RWLISTIO-2").execute();
+        assertTrue(resp.isSuccessful());
+        assertEquals(200, resp.code());
+        LOG.log(Level.INFO, resp.body().toString());
+    }
+
+    @Test
+    public void searchIssues() throws IOException {
+        var client = factory.buildClient(token, orgId);
+
+        var myself = client.myself().execute().body();
+        var req = new SearchIssue(Collections.singletonMap("assignee", myself.getUid().toString()));
+
+        var resp = client.searchIssues(req, "-updatedAt").execute();
+        assertTrue(resp.isSuccessful());
+        assertEquals(200, resp.code());
         LOG.log(Level.INFO, resp.body().toString());
     }
 }

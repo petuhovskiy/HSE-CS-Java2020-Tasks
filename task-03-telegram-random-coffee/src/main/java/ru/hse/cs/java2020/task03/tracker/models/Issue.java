@@ -2,6 +2,8 @@
 package ru.hse.cs.java2020.task03.tracker.models;
 
 
+import java.util.List;
+
 public class Issue {
     private String self;
     private String id;
@@ -15,6 +17,7 @@ public class Issue {
     private Priority priority;
     private String createdAt;
     private User createdBy;
+    private User assignee;
     private Integer commentWithoutExternalMessageCount;
     private Integer votes;
     private Integer commentWithExternalMessageCount;
@@ -22,6 +25,7 @@ public class Issue {
     private String updatedAt;
     private Status status;
     private Boolean favorite;
+    private List<User> followers;
 
     public String getSelf() {
         return self;
@@ -175,6 +179,22 @@ public class Issue {
         this.queue = queue;
     }
 
+    public User getAssignee() {
+        return assignee;
+    }
+
+    public void setAssignee(User assignee) {
+        this.assignee = assignee;
+    }
+
+    public List<User> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(List<User> followers) {
+        this.followers = followers;
+    }
+
     @Override
     public String toString() {
         return "Issue{" +
@@ -190,6 +210,7 @@ public class Issue {
                 ", priority=" + priority +
                 ", createdAt='" + createdAt + '\'' +
                 ", createdBy=" + createdBy +
+                ", assignee=" + assignee +
                 ", commentWithoutExternalMessageCount=" + commentWithoutExternalMessageCount +
                 ", votes=" + votes +
                 ", commentWithExternalMessageCount=" + commentWithExternalMessageCount +
