@@ -45,7 +45,7 @@ public class CreateTaskController {
                             .map(it -> it.getId() + ". " + it.getName()),
                     Stream.of(KEY_CANCEL)
             )
-                    .map(it -> new String[]{it})
+                    .map(it -> new String[] {it})
                     .toArray(String[][]::new);
 
             resp.sendKeyboard("Выберите очередь:", new ReplyKeyboardMarkup(buttons));
@@ -56,6 +56,36 @@ public class CreateTaskController {
         }
     }
 
+    public static void askName(Request req, Response resp) {
+        var state = req.getState();
+        state.setKey(MenuKey.CREATE_TASK_NAME);
+        resp.sendKeyboard("Введите имя задачи:", backKeyboard());
+    }
+
+    public static void askDescription(Request req, Response resp) {
+        var state = req.getState();
+        state.setKey(MenuKey.CREATE_TASK_DESCRIPTION);
+        resp.sendKeyboard("Введите описание задачи:", backKeyboard());
+    }
+
+    public static void askAssignee(Request req, Response resp) {
+        var state = req.getState();
+        state.setKey(MenuKey.CREATE_TASK_ASSIGNEE);
+
+        String[][] buttons = new String[][] {
+                {KEY_YES, KEY_NO},
+                {KEY_BACK, KEY_CANCEL},
+        };
+
+        resp.sendKeyboard("Хотите назначить задачу на себя?", new ReplyKeyboardMarkup(buttons));
+    }
+
+    public static Keyboard backKeyboard() {
+        return new ReplyKeyboardMarkup(
+                new String[] {KEY_BACK, KEY_CANCEL}
+        );
+    }
+
     @BotRequestMapping(key = MenuKey.CREATE_TASK_QUEUE)
     public void handleQueue(Request req, Response resp) {
         var text = req.getText();
@@ -64,6 +94,7 @@ public class CreateTaskController {
             case KEY_CANCEL:
                 MainController.goToMainMenu(req, resp);
                 return;
+            default:
         }
 
         var pos = text.indexOf('.');
@@ -83,12 +114,6 @@ public class CreateTaskController {
         askName(req, resp);
     }
 
-    public static void askName(Request req, Response resp) {
-        var state = req.getState();
-        state.setKey(MenuKey.CREATE_TASK_NAME);
-        resp.sendKeyboard("Введите имя задачи:", backKeyboard());
-    }
-
     @BotRequestMapping(key = MenuKey.CREATE_TASK_NAME)
     public void handleName(Request req, Response resp) {
         var text = req.getText();
@@ -99,16 +124,12 @@ public class CreateTaskController {
             case KEY_CANCEL:
                 MainController.goToMainMenu(req, resp);
                 return;
+            default:
+                break;
         }
 
         req.getState().getCreateIssue().setSummary(text);
         askDescription(req, resp);
-    }
-
-    public static void askDescription(Request req, Response resp) {
-        var state = req.getState();
-        state.setKey(MenuKey.CREATE_TASK_DESCRIPTION);
-        resp.sendKeyboard("Введите описание задачи:", backKeyboard());
     }
 
     @BotRequestMapping(key = MenuKey.CREATE_TASK_DESCRIPTION)
@@ -121,22 +142,12 @@ public class CreateTaskController {
             case KEY_CANCEL:
                 MainController.goToMainMenu(req, resp);
                 return;
+            default:
+                break;
         }
 
         req.getState().getCreateIssue().setDescription(text);
         askAssignee(req, resp);
-    }
-
-    public static void askAssignee(Request req, Response resp) {
-        var state = req.getState();
-        state.setKey(MenuKey.CREATE_TASK_ASSIGNEE);
-
-        String[][] buttons = new String[][]{
-            {KEY_YES, KEY_NO},
-            {KEY_BACK, KEY_CANCEL},
-        };
-
-        resp.sendKeyboard("Хотите назначить задачу на себя?", new ReplyKeyboardMarkup(buttons));
     }
 
     @BotRequestMapping(key = MenuKey.CREATE_TASK_ASSIGNEE)
@@ -185,11 +196,5 @@ public class CreateTaskController {
         }
 
         askAssignee(req, resp);
-    }
-
-    public static Keyboard backKeyboard() {
-        return new ReplyKeyboardMarkup(
-                new String[]{KEY_BACK, KEY_CANCEL}
-        );
     }
 }

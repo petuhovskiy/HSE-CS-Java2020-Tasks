@@ -1,7 +1,5 @@
 package ru.hse.cs.java2020.task03.controller;
 
-import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
-import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup;
 import ru.hse.cs.java2020.task03.bot.Request;
 import ru.hse.cs.java2020.task03.bot.Response;
@@ -9,9 +7,7 @@ import ru.hse.cs.java2020.task03.bot.auto.BotController;
 import ru.hse.cs.java2020.task03.bot.auto.BotRequestMapping;
 import ru.hse.cs.java2020.task03.state.models.MenuKey;
 import ru.hse.cs.java2020.task03.tracker.Client;
-import ru.hse.cs.java2020.task03.tracker.models.CreateIssue;
 import ru.hse.cs.java2020.task03.tracker.models.Issue;
-import ru.hse.cs.java2020.task03.tracker.models.QueueLink;
 import ru.hse.cs.java2020.task03.tracker.models.User;
 
 import java.util.stream.Collectors;
@@ -26,20 +22,7 @@ public class ViewIssueController {
     public static void start(Request req, Response resp) {
         var state = req.getState();
         state.setKey(MenuKey.VIEW_TASK);
-        resp.sendKeyboard("Введите ключ задачи:", new ReplyKeyboardMarkup(new String[][]{{KEY_CANCEL}}));
-    }
-
-    @BotRequestMapping(key = MenuKey.VIEW_TASK)
-    public void handleIssue(Request req, Response resp) {
-        var text = req.getText();
-        switch (text) {
-            case KEY_CANCEL:
-                MainController.goToMainMenu(req, resp);
-                return;
-        }
-
-        MainController.goToMainMenu(req, resp);
-        viewIssue(req.getClient(), text, resp);
+        resp.sendKeyboard("Введите ключ задачи:", new ReplyKeyboardMarkup(new String[][] {{KEY_CANCEL}}));
     }
 
     public static void viewIssue(Client client, String key, Response resp) {
@@ -70,20 +53,35 @@ public class ViewIssueController {
         }
 
         return lines(
-            String.format("Задача <a href=\"https://tracker.yandex.ru/%s\">%s</a>", issue.getKey(), issue.getKey()),
-            "",
-            "<b>Название:</b> " + issue.getSummary(),
-            "<b>Автор:</b> " + userText(issue.getCreatedBy()),
-            "<b>Исполнитель:</b> " + userText(issue.getAssignee()),
-            "<b>Наблюдатели:</b> " + followers,
-            "<b>Комментариев:</b> " + issue.getCommentWithoutExternalMessageCount(),
-            "",
-            "<b>Описание:</b>",
-            issue.getDescription()
+                String.format("Задача <a href=\"https://tracker.yandex.ru/%s\">%s</a>", issue.getKey(), issue.getKey()),
+                "",
+                "<b>Название:</b> " + issue.getSummary(),
+                "<b>Автор:</b> " + userText(issue.getCreatedBy()),
+                "<b>Исполнитель:</b> " + userText(issue.getAssignee()),
+                "<b>Наблюдатели:</b> " + followers,
+                "<b>Комментариев:</b> " + issue.getCommentWithoutExternalMessageCount(),
+                "",
+                "<b>Описание:</b>",
+                issue.getDescription()
         );
     }
 
     public static String userText(User user) {
         return (user == null ? "" : user.getDisplay());
+    }
+
+    @BotRequestMapping(key = MenuKey.VIEW_TASK)
+    public void handleIssue(Request req, Response resp) {
+        var text = req.getText();
+        switch (text) {
+            case KEY_CANCEL:
+                MainController.goToMainMenu(req, resp);
+                return;
+            default:
+                break;
+        }
+
+        MainController.goToMainMenu(req, resp);
+        viewIssue(req.getClient(), text, resp);
     }
 }

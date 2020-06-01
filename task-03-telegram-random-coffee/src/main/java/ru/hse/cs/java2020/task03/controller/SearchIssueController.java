@@ -10,7 +10,9 @@ import ru.hse.cs.java2020.task03.state.models.MenuKey;
 import ru.hse.cs.java2020.task03.tracker.models.Issue;
 import ru.hse.cs.java2020.task03.tracker.models.SearchIssue;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -63,7 +65,8 @@ public class SearchIssueController {
 
         resp.sendKeyboard(
                 String.format(
-                        "Cписок задач, назначенных на тебя, отсортированные по убыванию по дате обновления с паджинацией  (страница %d/%d):\n\n",
+                        "Cписок задач, назначенных на тебя, отсортированные по убыванию по дате обновления с паджинацией  (страница %d/%d):"
+                        + "\n\n",
                         page + 1,
                         pagesCount(issues.size())
                 ) + IntStream
@@ -80,6 +83,18 @@ public class SearchIssueController {
 
     public static String issueLine(Issue issue) {
         return String.format("<b>%s</b>: %s", issue.getKey(), issue.getSummary());
+    }
+
+    public static Keyboard keyboard(int page, int pagesCount) {
+        return new ReplyKeyboardMarkup(new String[][] {
+                Stream.of(
+                        page > 0 ? KEY_LEFT : null,
+                        page + 1 < pagesCount ? KEY_RIGHT : null
+                )
+                        .filter(Objects::nonNull)
+                        .toArray(String[]::new),
+                {KEY_CANCEL}
+        });
     }
 
     @BotRequestMapping(key = MenuKey.SEARCH_TASK)
@@ -103,6 +118,8 @@ public class SearchIssueController {
                 }
                 showCurrentPage(req, resp);
                 return;
+            default:
+                break;
         }
 
         if (!text.startsWith(PREFIX_ISSUE)) {
@@ -117,17 +134,5 @@ public class SearchIssueController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public static Keyboard keyboard(int page, int pagesCount) {
-        return new ReplyKeyboardMarkup(new String[][]{
-                Stream.of(
-                        page > 0 ? KEY_LEFT : null,
-                        page + 1 < pagesCount ? KEY_RIGHT : null
-                )
-                        .filter(Objects::nonNull)
-                        .toArray(String[]::new),
-                {KEY_CANCEL}
-        });
     }
 }

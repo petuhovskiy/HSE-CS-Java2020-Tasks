@@ -1,4 +1,3 @@
-
 package ru.hse.cs.java2020.task03.tracker.models;
 
 
@@ -193,31 +192,5 @@ public class Issue {
 
     public void setFollowers(List<User> followers) {
         this.followers = followers;
-    }
-
-    @Override
-    public String toString() {
-        return "Issue{" +
-                "self='" + self + '\'' +
-                ", id='" + id + '\'' +
-                ", key='" + key + '\'' +
-                ", version=" + version +
-                ", summary='" + summary + '\'' +
-                ", statusStartTime='" + statusStartTime + '\'' +
-                ", updatedBy=" + updatedBy +
-                ", description='" + description + '\'' +
-                ", type=" + type +
-                ", priority=" + priority +
-                ", createdAt='" + createdAt + '\'' +
-                ", createdBy=" + createdBy +
-                ", assignee=" + assignee +
-                ", commentWithoutExternalMessageCount=" + commentWithoutExternalMessageCount +
-                ", votes=" + votes +
-                ", commentWithExternalMessageCount=" + commentWithExternalMessageCount +
-                ", queue=" + queue +
-                ", updatedAt='" + updatedAt + '\'' +
-                ", status=" + status +
-                ", favorite=" + favorite +
-                '}';
     }
 }

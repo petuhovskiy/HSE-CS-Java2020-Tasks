@@ -44,14 +44,4 @@ public class QueueLink {
     public void setDisplay(String display) {
         this.display = display;
     }
-
-    @Override
-    public String toString() {
-        return "QueueLink{" +
-                "self='" + self + '\'' +
-                ", id='" + id + '\'' +
-                ", key='" + key + '\'' +
-                ", display='" + display + '\'' +
-                '}';
-    }
 }

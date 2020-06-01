@@ -7,15 +7,15 @@ import ru.hse.cs.java2020.task03.bot.Response;
 
 @Component
 public class MessageHandlerAuto implements MessageHandler {
-    private final TelegramBeanAuto telegramBeanAuto;
+    private final Routes routes;
 
-    public MessageHandlerAuto(TelegramBeanAuto telegramBeanAuto) {
-        this.telegramBeanAuto = telegramBeanAuto;
+    public MessageHandlerAuto(Routes routes) {
+        this.routes = routes;
     }
 
     @Override
     public void handleMessage(Request req, Response resp) {
-        for (RouteItem item : telegramBeanAuto.getItems()) {
+        for (RouteItem item : routes.getItems()) {
             if (item.getKey().isEmpty()) {
                 continue;
             }

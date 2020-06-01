@@ -26,7 +26,7 @@ public class Response {
     public void sendText(String text) {
         this.bot.execute(
                 new SendMessage(chatId, text)
-                    .parseMode(ParseMode.HTML)
+                        .parseMode(ParseMode.HTML)
         );
     }
 
@@ -37,8 +37,8 @@ public class Response {
 
         this.bot.execute(
                 new SendMessage(chatId, text)
-                    .parseMode(ParseMode.HTML)
-                    .replyMarkup(keyboard)
+                        .parseMode(ParseMode.HTML)
+                        .replyMarkup(keyboard)
         );
     }
 }

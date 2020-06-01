@@ -37,13 +37,4 @@ public class CreateIssue {
     public void setAssignee(User assignee) {
         this.assignee = assignee;
     }
-
-    @Override
-    public String toString() {
-        return "CreateIssue{" +
-                "summary='" + summary + '\'' +
-                ", queue=" + queue +
-                ", description='" + description + '\'' +
-                '}';
-    }
 }

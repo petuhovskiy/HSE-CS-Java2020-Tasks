@@ -38,14 +38,4 @@ public class Priority {
     public void setDisplay(String display) {
         this.display = display;
     }
-
-    @Override
-    public String toString() {
-        return "Priority{" +
-                "self='" + self + '\'' +
-                ", id='" + id + '\'' +
-                ", key='" + key + '\'' +
-                ", display='" + display + '\'' +
-                '}';
-    }
 }

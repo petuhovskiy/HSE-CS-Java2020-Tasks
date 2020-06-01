@@ -137,25 +137,4 @@ public class Queue {
     public void setAllowExternalMailing(Boolean allowExternalMailing) {
         this.allowExternalMailing = allowExternalMailing;
     }
-
-    @Override
-    public String toString() {
-        return "Queue{" +
-                "self='" + self + '\'' +
-                ", id=" + id +
-                ", key='" + key + '\'' +
-                ", version=" + version +
-                ", name='" + name + '\'' +
-                ", lead=" + lead +
-                ", assignAuto=" + assignAuto +
-                ", defaultType=" + defaultType +
-                ", defaultPriority=" + defaultPriority +
-                ", denyVoting=" + denyVoting +
-                ", denyConductorAutolink=" + denyConductorAutolink +
-                ", denyTrackerAutolink=" + denyTrackerAutolink +
-                ", useComponentPermissionsIntersection=" + useComponentPermissionsIntersection +
-                ", useLastSignature=" + useLastSignature +
-                ", allowExternalMailing=" + allowExternalMailing +
-                '}';
-    }
 }

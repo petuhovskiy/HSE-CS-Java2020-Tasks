@@ -7,15 +7,15 @@ import ru.hse.cs.java2020.task03.bot.Response;
 
 @Component
 public class InlineHandlerAuto implements InlineHandler {
-    private final TelegramBeanAuto telegramBeanAuto;
+    private final Routes routes;
 
-    public InlineHandlerAuto(TelegramBeanAuto telegramBeanAuto) {
-        this.telegramBeanAuto = telegramBeanAuto;
+    public InlineHandlerAuto(Routes routes) {
+        this.routes = routes;
     }
 
     @Override
     public void handleInline(Request req, Response resp) {
-        for (RouteItem item : telegramBeanAuto.getItems()) {
+        for (RouteItem item : routes.getItems()) {
             if (item.getInlinePrefix().isEmpty()) {
                 continue;
             }

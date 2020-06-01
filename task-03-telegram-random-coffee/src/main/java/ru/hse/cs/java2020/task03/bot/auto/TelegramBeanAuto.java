@@ -15,9 +15,9 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 @Component
-public class TelegramBeanAuto implements BeanPostProcessor, Ordered {
+public class TelegramBeanAuto implements BeanPostProcessor, Ordered, Routes {
     private static final Logger LOG = Logger.getLogger("TelegramBeans");
-
+    private static final int LAST_ORDER = 100;
     private final List<RouteItem> items;
     private final Map<String, Class> botControllerMap;
 
@@ -72,8 +72,6 @@ public class TelegramBeanAuto implements BeanPostProcessor, Ordered {
 
         items.add(new RouteItem(bean, method, key, inlinePrefix));
     }
-
-    private static final int LAST_ORDER = 100;
 
     @Override
     public int getOrder() {

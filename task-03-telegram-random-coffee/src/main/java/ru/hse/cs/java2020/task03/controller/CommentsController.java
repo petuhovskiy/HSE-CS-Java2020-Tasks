@@ -18,12 +18,23 @@ import static ru.hse.cs.java2020.task03.bot.utils.Inline.createInline;
 @BotController
 public class CommentsController {
     public static final String PATH = "comments";
-    public static final int PAGE_SIZE = 1; // TODO: 5
+    public static final int PAGE_SIZE = 5;
 
     public static InlineKeyboardMarkup inlineKeyboard(String text, String key, int page) {
-        return new InlineKeyboardMarkup(new InlineKeyboardButton[][]{
+        return new InlineKeyboardMarkup(new InlineKeyboardButton[][] {
                 {new InlineKeyboardButton(text).callbackData(createInline(PATH, key, page))}
         });
+    }
+
+    public static String commentText(Comment comment) {
+        return lines(
+                String.format(
+                        "%s [%s]",
+                        comment.getCreatedBy().getDisplay(),
+                        comment.getCreatedAt()
+                ),
+                comment.getText()
+        );
     }
 
     @BotRequestMapping(inlinePrefix = PATH + "/")
@@ -67,16 +78,5 @@ public class CommentsController {
             e.printStackTrace();
             resp.sendText(errorMessage(e));
         }
-    }
-
-    public static String commentText(Comment comment) {
-        return lines(
-                String.format(
-                        "%s [%s]",
-                        comment.getCreatedBy().getDisplay(),
-                        comment.getCreatedAt()
-                ),
-                comment.getText()
-        );
     }
 }

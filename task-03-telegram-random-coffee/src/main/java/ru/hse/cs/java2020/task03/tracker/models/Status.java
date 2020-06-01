@@ -37,14 +37,4 @@ public class Status {
     public void setDisplay(String display) {
         this.display = display;
     }
-
-    @Override
-    public String toString() {
-        return "Status{" +
-                "self='" + self + '\'' +
-                ", id='" + id + '\'' +
-                ", key='" + key + '\'' +
-                ", display='" + display + '\'' +
-                '}';
-    }
 }

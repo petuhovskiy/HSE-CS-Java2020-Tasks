@@ -25,16 +25,16 @@ public class AuthController {
         req.getState().setOrgId("");
         req.getState().setMyself(null);
         resp.sendText(
-            lines(
-                "Для начала использования бота нужно выполнить несколько шагов:",
-                "",
-                String.format(
-                        "1. Перейдите <a href=\"%s\">по ссылке</a>",
-                        "https://oauth.yandex.ru/authorize?response_type=token&client_id=" + clientId
-                ),
-                "2. Примите условия и скопируйте токен",
-                "3. Пришлите токен отдельным сообщением"
-            )
+                lines(
+                        "Для начала использования бота нужно выполнить несколько шагов:",
+                        "",
+                        String.format(
+                                "1. Перейдите <a href=\"%s\">по ссылке</a>",
+                                "https://oauth.yandex.ru/authorize?response_type=token&client_id=" + clientId
+                        ),
+                        "2. Примите условия и скопируйте токен",
+                        "3. Пришлите токен отдельным сообщением"
+                )
         );
     }
 
@@ -53,10 +53,10 @@ public class AuthController {
     public void goToAwaitOrgId(Request req, Response resp) {
         req.getState().setKey(MenuKey.AWAIT_ORG_ID);
         resp.sendText(
-                 String.format(
-                    "Теперь перейдите <a href=\"%s\">по ссылке</a>",
-                    "https://tracker.yandex.ru/settings"
-                 ) + ", скопируйте 'ID организации для API' и пришлите отдельным сообщением"
+                String.format(
+                        "Теперь перейдите <a href=\"%s\">по ссылке</a>",
+                        "https://tracker.yandex.ru/settings"
+                ) + ", скопируйте 'ID организации для API' и пришлите отдельным сообщением"
         );
     }
 

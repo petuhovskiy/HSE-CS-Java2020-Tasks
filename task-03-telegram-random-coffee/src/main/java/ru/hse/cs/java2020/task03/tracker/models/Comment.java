@@ -100,21 +100,4 @@ public class Comment {
     public void setTransport(String transport) {
         this.transport = transport;
     }
-
-    @Override
-    public String toString() {
-        return "Comment{" +
-                "self='" + self + '\'' +
-                ", id=" + id +
-                ", longId='" + longId + '\'' +
-                ", text='" + text + '\'' +
-                ", createdBy=" + createdBy +
-                ", updatedBy=" + updatedBy +
-                ", createdAt='" + createdAt + '\'' +
-                ", updatedAt='" + updatedAt + '\'' +
-                ", version=" + version +
-                ", type='" + type + '\'' +
-                ", transport='" + transport + '\'' +
-                '}';
-    }
 }

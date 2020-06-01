@@ -14,6 +14,13 @@ public class Inline {
         return new Inline(str.split("/"));
     }
 
+    public static String createInline(Object... objects) {
+        return Arrays
+                .stream(objects)
+                .map(Object::toString)
+                .collect(Collectors.joining("/"));
+    }
+
     public String[] getPath() {
         return path;
     }
@@ -37,12 +44,5 @@ public class Inline {
             e.printStackTrace();
         }
         return 0;
-    }
-
-    public static String createInline(Object... objects) {
-        return Arrays
-                .stream(objects)
-                .map(Object::toString)
-                .collect(Collectors.joining("/"));
     }
 }

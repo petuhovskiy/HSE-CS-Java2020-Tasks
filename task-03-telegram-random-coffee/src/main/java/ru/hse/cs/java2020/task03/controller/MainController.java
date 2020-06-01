@@ -30,10 +30,10 @@ public class MainController {
         state.setKey(MenuKey.MAIN_MENU);
 
         String fullName = String.format(
-            "%s %s aka %s",
-            state.getMyself().getFirstName(),
-            state.getMyself().getLastName(),
-            state.getMyself().getLogin()
+                "%s %s aka %s",
+                state.getMyself().getFirstName(),
+                state.getMyself().getLastName(),
+                state.getMyself().getLogin()
         );
 
         resp.sendKeyboard(
@@ -48,8 +48,8 @@ public class MainController {
 
     public static Keyboard menuKeyboard() {
         return new ReplyKeyboardMarkup(
-                new String[]{KEY_CREATE_TASK, KEY_VIEW_TASK},
-                new String[]{KEY_SEARCH_TASK, KEY_LOGOUT}
+                new String[] {KEY_CREATE_TASK, KEY_VIEW_TASK},
+                new String[] {KEY_SEARCH_TASK, KEY_LOGOUT}
         );
     }
 

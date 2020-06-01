@@ -1,4 +1,3 @@
-
 package ru.hse.cs.java2020.task03.tracker.models;
 
 
@@ -36,14 +35,5 @@ public class User {
 
     public void setDisplay(String display) {
         this.display = display;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "self='" + self + '\'' +
-                ", id='" + id + '\'' +
-                ", display='" + display + '\'' +
-                '}';
     }
 }

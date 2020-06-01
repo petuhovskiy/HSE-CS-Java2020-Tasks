@@ -5,7 +5,10 @@ import org.springframework.web.util.HtmlUtils;
 
 import java.util.Arrays;
 
-public class Format {
+public final class Format {
+    private Format() {
+    }
+
     public static String lines(String... args) {
         return Strings.join(Arrays.asList(args), '\n');
     }

@@ -110,22 +110,4 @@ public class Myself {
     public void setDisableNotifications(Boolean disableNotifications) {
         this.disableNotifications = disableNotifications;
     }
-
-    @Override
-    public String toString() {
-        return "Myself{" +
-                "self='" + self + '\'' +
-                ", uid=" + uid +
-                ", login='" + login + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", display='" + display + '\'' +
-                ", email='" + email + '\'' +
-                ", external=" + external +
-                ", hasLicense=" + hasLicense +
-                ", dismissed=" + dismissed +
-                ", useNewFilters=" + useNewFilters +
-                ", disableNotifications=" + disableNotifications +
-                '}';
-    }
 }

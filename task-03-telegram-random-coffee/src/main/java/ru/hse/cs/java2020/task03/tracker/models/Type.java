@@ -38,14 +38,4 @@ public class Type {
     public void setDisplay(String display) {
         this.display = display;
     }
-
-    @Override
-    public String toString() {
-        return "Type{" +
-                "self='" + self + '\'' +
-                ", id='" + id + '\'' +
-                ", key='" + key + '\'' +
-                ", display='" + display + '\'' +
-                '}';
-    }
 }
