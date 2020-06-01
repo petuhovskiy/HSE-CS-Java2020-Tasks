@@ -58,20 +58,22 @@ public class SearchIssueController {
 
     public static void showCurrentPage(Request req, Response resp) {
         var state = req.getState();
-        var client = req.getClient();
         var page = state.getSearchPage();
         var issues = state.getAllIssues();
 
         resp.sendKeyboard(
-                String.format("Список задач (страница %d/%d):\n\n", page + 1, pagesCount(issues.size())) +
-                        IntStream
-                                .range(0, issues.size())
-                                .skip(page * PAGE_SIZE)
-                                .limit(PAGE_SIZE)
-                                .mapToObj(it -> String.format(
-                                        "/i%s %s", it, issueLine(issues.get(it))
-                                ))
-                                .collect(Collectors.joining("\n")),
+                String.format(
+                        "Cписок задач, назначенных на тебя, отсортированные по убыванию по дате обновления с паджинацией  (страница %d/%d):\n\n",
+                        page + 1,
+                        pagesCount(issues.size())
+                ) + IntStream
+                        .range(0, issues.size())
+                        .skip(page * PAGE_SIZE)
+                        .limit(PAGE_SIZE)
+                        .mapToObj(it -> String.format(
+                                "/i%s %s", it, issueLine(issues.get(it))
+                        ))
+                        .collect(Collectors.joining("\n")),
                 keyboard(page, pagesCount(issues.size()))
         );
     }

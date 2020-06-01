@@ -20,6 +20,9 @@ public interface Client {
     @POST("issues/_search")
     Call<List<Issue>> searchIssues(@Body SearchIssue body, @Query("order") String order);
 
+    @GET("issues/{key}/comments")
+    Call<List<Comment>> commentsIssue(@Path("key") String key);
+
     @POST("issues")
     Call<Issue> createIssue(@Body CreateIssue issue);
 }

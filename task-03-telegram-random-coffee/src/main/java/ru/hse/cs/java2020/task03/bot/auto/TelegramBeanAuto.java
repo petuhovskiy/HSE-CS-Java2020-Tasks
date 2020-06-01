@@ -62,10 +62,15 @@ public class TelegramBeanAuto implements BeanPostProcessor, Ordered {
             key = Optional.of(botRequestMapping.key()[0]);
         }
 
+        Optional<String> inlinePrefix = Optional.empty();
+        if (botRequestMapping.inlinePrefix().length != 0) {
+            inlinePrefix = Optional.of(botRequestMapping.inlinePrefix()[0]);
+        }
+
         String className = bean.getClass().getSimpleName();
         LOG.info(String.format("Found bot handler, class=%s, key=%s", className, key));
 
-        items.add(new RouteItem(bean, method, key));
+        items.add(new RouteItem(bean, method, key, inlinePrefix));
     }
 
     private static final int LAST_ORDER = 100;

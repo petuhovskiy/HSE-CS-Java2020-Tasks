@@ -112,4 +112,14 @@ public class ClientTest {
         assertEquals(200, resp.code());
         LOG.log(Level.INFO, resp.body().toString());
     }
+
+    @Test
+    public void commentsIssue() throws IOException {
+        var client = factory.buildClient(token, orgId);
+
+        var resp = client.commentsIssue("RWLISTIO-2").execute();
+        assertTrue(resp.isSuccessful());
+        assertEquals(200, resp.code());
+        LOG.log(Level.INFO, resp.body().toString());
+    }
 }

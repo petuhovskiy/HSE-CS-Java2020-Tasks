@@ -1,5 +1,7 @@
 package ru.hse.cs.java2020.task03.controller;
 
+import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
+import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup;
 import ru.hse.cs.java2020.task03.bot.Request;
 import ru.hse.cs.java2020.task03.bot.Response;
@@ -47,7 +49,10 @@ public class ViewIssueController {
                 throw new RuntimeException("Unsuccessful request. Response=" + response.errorBody().string());
             }
             Issue issue = response.body();
-            resp.sendText(issueText(issue));
+            resp.sendKeyboard(
+                    issueText(issue),
+                    CommentsController.inlineKeyboard("Комментарии", key, 0)
+            );
         } catch (Exception e) {
             e.printStackTrace();
             resp.sendText(errorMessage(e));
@@ -71,6 +76,7 @@ public class ViewIssueController {
             "<b>Автор:</b> " + userText(issue.getCreatedBy()),
             "<b>Исполнитель:</b> " + userText(issue.getAssignee()),
             "<b>Наблюдатели:</b> " + followers,
+            "<b>Комментариев:</b> " + issue.getCommentWithoutExternalMessageCount(),
             "",
             "<b>Описание:</b>",
             issue.getDescription()
