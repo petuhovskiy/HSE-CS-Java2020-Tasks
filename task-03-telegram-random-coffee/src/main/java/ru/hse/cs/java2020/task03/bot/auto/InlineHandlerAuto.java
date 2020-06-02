@@ -21,7 +21,7 @@ public class InlineHandlerAuto implements InlineHandler {
             }
 
             String prefix = item.getInlinePrefix().get();
-            if (!req.getCallback().data().startsWith(prefix)) {
+            if (!req.getCallbackData().startsWith(prefix)) {
                 continue;
             }
 

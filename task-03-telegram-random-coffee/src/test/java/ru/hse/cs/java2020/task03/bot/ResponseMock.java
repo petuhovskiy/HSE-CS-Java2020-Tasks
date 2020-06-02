@@ -44,8 +44,12 @@ public class ResponseMock implements Response {
         return messages;
     }
 
+    public void assertText(String text, int pos) {
+        assertEquals(text, messages.get(pos).getParameters().get("text"));
+    }
+
     public void assertText(String text) {
         assertEquals(1, messages.size());
-        assertEquals(text, messages.get(0).getParameters().get("text"));
+        assertText(text, 0);
     }
 }
